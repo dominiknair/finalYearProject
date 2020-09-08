@@ -1,0 +1,99 @@
+{% extends "project/base.html" %}
+{% block content%}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+
+<h1>Rate an event you marked as interested!</h1>
+<br>
+    {% for post in posts %}
+
+      {% csrf_token %}
+      <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <div id="date">Date: {{post.date}}</div>
+            <small class="text-muted">Location: {{post.location}}</small>
+          </div>
+
+          <h2><a class="article-title" href="{{post.link}}">{{ post.title }}</a></h2>
+
+          <p class="article-content">Event categories: {{post.category}}</p>
+          <small class="text-muted">price : {{post.price}}</small>
+          <br>
+        </div>
+      </article>
+      <article class="media content-section">
+      <form>
+      If you have attended the event, then please enter a rating between 1 and 10 (1 = DISLIKE, 10 = LIKE)
+      <br>Rating (between 1 and 10): <input type="number" min="1" max="10" id="rating">
+      <input type="hidden" id="eventId" name="eventId" value="{{post.id}}">
+      <input type="hidden" id="eventCategories" name="eventCategories" value="{{post.category}}">
+      <button type="button" name="button" class="btn btn-outline-info" id="rating-btn">Rate event</button><br>
+      <button type="button" name="button" class="btn btn-outline-info" style="background-color:white; border-color:red; color:red" id="delete-btn">I didn't attend event</button><br><br>
+    </form>
+    </article>
+    {% endfor %}
+    <script type="text/javascript">
+      // var idOfEvent = "{{post.id}}"
+      // console.log(idOfEvent)
+      // var idOfEvent = document.getElementById("eventId").value
+      // console.log(idOfEvent)
+        $.ajax({
+              headers: { "X-CSRFToken": '{{csrf_token}}'}
+        })
+        $("#delete-btn").click(function(e){
+          // var idOfEvent = "{{post.id}}"
+          var idOfEvent = document.getElementById("eventId").value
+
+          $.ajax({
+            url: {% url 'deleteInterested' %},
+            method:"POST",
+            data:{
+                id:idOfEvent,
+                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function()
+            {
+              console.log("successful")
+              window.alert("Thank you for your input!")
+              window.location.href = "{%url 'interestedEvents'%}";
+
+            },
+          })
+        })
+
+
+        $("#rating-btn").click(function(e){
+          var rating = document.getElementById("rating").value
+          var category= document.getElementById("eventCategories").value
+          var idOfEvent = document.getElementById("eventId").value
+
+          if(rating=="" || rating < 1 || rating > 10){
+            alert("Invalid input for rating! (Rating must be a number between 1-10)")
+          }
+          else{
+            $.ajax({
+              url: {% url 'addToUserProfile' %},
+              method:"POST",
+              data:{
+                  id:idOfEvent,
+                  rating:rating,
+                  category: category,
+                  'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+              },
+              success: function()
+              {
+                console.log("successful")
+                window.alert("Thank you for your rating!")
+                window.location.href = "{%url 'interestedEvents'%}";
+              },
+            })
+          }
+
+        })
+    </script>
+{% endblock content%}

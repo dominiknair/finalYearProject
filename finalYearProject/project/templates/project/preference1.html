@@ -1,0 +1,144 @@
+{% extends "project/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+<style>
+strong {color: #963E3E;}
+</style>
+
+<article class="media content-section">
+  <div class="media-body">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+
+<h1>Please enter your preferences</h1>
+<form id="preferenceForm">
+  {% csrf_token %}
+
+  What would you rate an event that is focused around <strong>health</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br><input name="healthRating" type="number" id="healthRating" min="1" max="10"/><br><br>
+  How would you rate an event that is oriented around <strong>science and technology</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br><input name="science-and-techRating" type="number" id="science-and-techRating" min="1" max="10"/><br><br>
+  How would you rate an event that is focused on <strong>sports and fitness</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br><input name="sports-and-fitnessRating" type="number" id="sports-and-fitnessRating" min="1" max="10"/><br><br>
+  How would you rate an event that is focused on <strong>business</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br><input name="businessRating" type="number" id="businessRating" min="1" max="10"/><br><br>
+  How would you rate an event that is focused on <strong>music</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br><input name="musicRating" type="number" id="musicRating" min="1" max="10"/><br><br>
+  How would you rate an event that is focused on <strong>arts</strong>? (this could be creative art or performing art) Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE):<br><input name="artsRating" type="number" id="artsRating" min="1" max="10"/><br><br>
+  How would you rate a <strong>charity event</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE):<br> <input name="charityRating" type="number" id="charityRating" min="1" max="10"/><br><br>
+  How would you rate an event that involves <strong>large group gatherings</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="communityRating" type="number" id="communityRating" min="1" max="10"/><br><br>
+
+
+  How would you rate an event that focuses around the <strong>environment</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="environmentRating" type="number" id="environmentRating" min="1" max="10"/><br><br>
+  How would you rate an event that focuses around the <strong>coding</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="codingRating" type="number" id="codingRating" min="1" max="10"/><br><br>
+  How would you rate an event that involves being in a <strong>lecture or seminar environment</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="talksRating" type="number" id="talksRating" min="1" max="10"/><br><br>
+  How would you rate an event that revolves around <strong>media</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="mediaRating" type="number" id="mediaRating" min="1" max="10"/><br><br>
+  How would you rate an event that involves <strong>tours or being guided</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="toursRating" type="number" id="toursRating" min="1" max="10"/><br><br>
+  How would you rate an event that focuses on <strong>historical events</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="historyRating" type="number" id="historyRating" min="1" max="10"/><br><br>
+  How would you rate an event that focuses on <strong>economics</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="economyRating" type="number" id="economyRating" min="1" max="10"/><br><br>
+  How would you rate a <strong>career event</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="careerRating" type="number" id="careerRating" min="1" max="10"/><br><br>
+  How would you rate a <strong>cultural event</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="culturalRating" type="number" id="culturalRating" min="1" max="10"/><br><br>
+  How would you rate a <strong>investment event</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="investmentRating" type="number" id="investmentRating" min="1" max="10"/><br><br>
+  How would you rate an event that allows you to <strong>network with others</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="networkingRating" type="number" id="networkingRating" min="1" max="10"/><br><br>
+  How would you rate an event that involves <strong>dancing</strong>? Please enter rating from  1 to 10 (1 = DISLIKE, 10 = LIKE): <br> <input name="danceRating" type="number" id="danceRating" min="1" max="10"/><br><br>
+  <br>
+  <button class="btn btn-outline-info" id="submit-btn">Submit</button>
+</form>
+
+<body>
+
+
+  <script type="text/javascript">
+    $(document).on('submit','#preferenceForm', function(e){
+      var health1 = document.getElementById("healthRating").value;
+      var science_and_tech1 = document.getElementById("science-and-techRating").value;
+      var sports_and_fitness1 = document.getElementById("sports-and-fitnessRating").value;
+      var business1 = document.getElementById("businessRating").value;
+      var music1 = document.getElementById("musicRating").value;
+      var arts1 = document.getElementById("artsRating").value;
+      var charity1 = document.getElementById("charityRating").value;
+      var community1 = document.getElementById("communityRating").value;
+
+      var environment1 = document.getElementById("environmentRating").value;
+      var coding1 = document.getElementById("codingRating").value;
+      var talks1 = document.getElementById("talksRating").value;
+      var media1 = document.getElementById("mediaRating").value;
+      var tours1 = document.getElementById("toursRating").value;
+      var history1 = document.getElementById("historyRating").value;
+      var economy1 = document.getElementById("economyRating").value;
+      var career1 = document.getElementById("careerRating").value;
+      var cultural1 = document.getElementById("culturalRating").value;
+      var investment1 = document.getElementById("investmentRating").value;
+      var networking1 = document.getElementById("networkingRating").value;
+      var dance1 = document.getElementById("danceRating").value;
+
+
+      if(health1=="" || science_and_tech1=="" || sports_and_fitness1=="" || business1=="" || music1=="" || arts1=="" || charity1=="" || community1=="" || environment1=="" || coding1=="" || talks1=="" || media1=="" || tours1=="" || history1=="" || economy1=="" || career1=="" || cultural1=="" || investment1=="" || networking1=="" || dance1=="")
+      {
+        alert("One or more fields have been left empty")
+        console.log("One or more fields have been left empty")
+        window.location.href = "/preference1";
+        console.log("empty field2")
+      }
+      else
+      {
+        console.log("field not empty")
+          $.ajax({
+            type : 'POST',
+            url: "{% url 'preference1' %}",
+            data:{
+              health:$('#healthRating').val(),
+              science_and_tech:$('#science-and-techRating').val(),
+              sports_and_fitness:$('#sports-and-fitnessRating').val(),
+              business:$('#businessRating').val(),
+              music:$('#musicRating').val(),
+              arts:$('#artsRating').val(),
+              charity:$('#charityRating').val(),
+              community:$('#communityRating').val(),
+              environment:$('#environmentRating').val(),
+              coding:$('#codingRating').val(),
+              talks:$('#talksRating').val(),
+              media:$('#mediaRating').val(),
+              tours:$('#toursRating').val(),
+              history:$('#historyRating').val(),
+              economy:$('#economyRating').val(),
+              career:$('#careerRating').val(),
+              cultural:$('#culturalRating').val(),
+              investment:$('#investmentRating').val(),
+              networking:$('#networkingRating').val(),
+              dance:$('#danceRating').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            error:function(){
+              console.log("error function")
+            },
+            success:function(){
+              window.alert("Thank you for your input!");
+              console.log("success")
+              window.location.href = "{%url 'project-home'%}";
+            }
+          });
+      }
+      });
+
+
+
+
+    // $(document).on('submit','#preferenceForm', function(e){
+    //   console.log("button clicked")
+    //   $.ajax({
+    //     type : 'POST',
+    //     url: "{% url 'preference1' %}",
+    //     data : $("#preferenceForm").serializeArray(),
+    //           csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+    //     success : function (data){
+    //       console.log("successful")
+    //     }
+    //   })
+    // });
+
+
+  </script>
+</body>
+</div>
+</article>
+{% endblock content%}

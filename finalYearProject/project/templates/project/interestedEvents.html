@@ -1,0 +1,30 @@
+{% extends "project/base.html" %}
+{% block content%}
+
+      <h1>MY INTERESTED EVENTS: </h1>
+      {% for red in redirect %}
+      <article class="media content-section">
+        <div class="media-body">
+        {{red.sentence}}
+        <div>
+      </article>
+      {% endfor %}
+
+    {% for post in posts %}
+      <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <div id="date">Date: {{post.date}}</div>
+            <small class="text-muted">Location: {{post.location}}</small>
+          </div>
+
+          <h2><a class="article-title" href="{% url 'interested-detail' post.id%}" >{{ post.title }}</a></h2>
+
+          <p class="article-content">Event categories: {{post.category}}</p>
+          <br>
+          <small class="text-muted">price : {{post.price}}</small>
+          <br>
+        </div>
+      </article>
+    {% endfor %}
+{% endblock content%}

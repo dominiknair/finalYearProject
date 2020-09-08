@@ -1,0 +1,68 @@
+{% extends "project/base.html" %}
+{% block content%}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+
+
+<form id="interestedForm">
+      {% csrf_token %}
+      <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <div id="date">Date: {{object.date}}</div>
+            <small class="text-muted">Location: {{object.location}}</small>
+          </div>
+          <h2><a class="article-title" href={{object.link}} target="_blank">{{ object.title }}</a></h2>
+          <p class="article-content">Event categories: {{object.category}}</p>
+          <p class="text-muted">price : {{object.price}}</p>
+          <br>
+          <button type="button" class="btn btn-outline-info" name="button" id="interested-btn">interested</button>
+        </div>
+      </article>
+</form>
+      <script type="text/javascript">
+
+          $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}'}
+          })
+          $("#interested-btn").click(function(e){
+            var date = "{{object.date}}"
+            var loc = "{{object.location}}"
+            var link= "{{object.link}}"
+            var title= "{{object.title}}"
+            var category= "{{object.category}}"
+            var price= "{{object.price}}"
+            console.log(date)
+            console.log(loc)
+            console.log(link)
+            console.log(title)
+            console.log(category)
+            console.log(price)
+
+            $.ajax({
+              url: {% url 'addInterested' %},
+              method:"POST",
+              data:{
+                  date: date,
+                  location: loc,
+                  link:link,
+                  title: title,
+                  category: category,
+                  price: price,
+                  'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+              },
+              success: function()
+              {
+                console.log("successful")
+                window.alert("Event added to interested!")
+                window.location.href = "{%url 'interestedEvents'%}";
+              },
+            })
+          })
+      </script>
+{% endblock content%}

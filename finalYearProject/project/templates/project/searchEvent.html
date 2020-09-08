@@ -1,0 +1,58 @@
+{% extends "project/base.html" %}
+{% block content%}
+<style>
+#List {
+  margin-left: -15px;
+}
+#searchEntry{
+  color: #963E3E;
+}
+</style>
+        <form class="form-inline">
+          <input class="form-control mr-sm-2" type="search" placeholder="Enter event name" aria-label="Search", id = "eventSearch" size="75">
+          <br>
+          <button class="btn my-2 my-sm-0"  id ="search">Search</button>
+      </form>
+    <div class="container pt-4" id ="List"></div>
+        <script>
+            $("#search").click(function(e){
+              var printEvent = ""
+              e.preventDefault()
+              $.ajax({
+                url:"{% url 'searchview1'%}",
+                method:"GET",
+                success: function(data){
+                console.log(data)
+                  $("#List").empty()
+                  numberOfEventsFound=0;
+                    for(i=0;i<data.Event.length;i++){
+                      if(data.Event[i].title.toLowerCase().includes($("#eventSearch").val().toLowerCase())){
+                        numberOfEventsFound++;
+                        var itemid = '{% url 'event-detail' 0 %}'.replace('0',data.Event[i].id)
+                        printEvent+=
+                        "<article class='media content-section'>" +
+                          "<div class='media-body'>"+
+                            "<div class='article-metadata'>"+
+                            "<div id='date'>"+data.Event[i].date.replace("|",",")+"</div>"+
+                              "<small><a class='text-muted'>"+data.Event[i].location.replace("|",",")+"</small>"+
+                                "</div>"+
+                                "<h2><a class='article-title' href='"+itemid+"' >"+ data.Event[i].title+ "</a></h2>"+
+                                "<p class='article-content'>Event categories:"+data.Event[i].category+"</p>"+
+                                "<small class='text-muted'>Price :" + data.Event[i].price+ "</small>" +
+                                "<br>" +
+                            "</div>"+
+                            "</article>"}}
+                            if(numberOfEventsFound==0){
+
+                              printEvent+=
+                              "<article class='media content-section'>" +
+                                "<div class='media-body'>"+ "<p> No events found with search: <strong id='searchEntry'>" + $("#eventSearch").val()+ "</strong></p>"
+                                  + "</div>" + "</article>";
+                            }
+                    $("#List").html(printEvent)
+
+                },
+              })
+            })
+          </script>
+{% endblock content%}
